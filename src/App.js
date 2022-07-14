@@ -103,34 +103,56 @@ function App() {
   }, []);
 
   const handleClick = (e, b) => {
-    e.target.style.backgroundColor = 'red';
+    e.target.style.backgroundColor = 'orange';
     const sound = document.getElementById(b.name.toUpperCase());
     sound.currentTime = 0;
     sound.play();
     setSoundDisplay(b.id.replace(/-/g, ' '));
-    setTimeout(() => (e.target.style.backgroundColor = 'grey'), 100);
+    setTimeout(() => (e.target.style.backgroundColor = 'lightgray'), 100);
   };
 
   return (
-    <div className="d-flex justify-content-center">
-      <div id="drum-machine">
-        <p id="display">{soundDisplay}</p>
-
-        {buttons.map((b, i) => (
-          <button
-            key={i}
-            id={b.id}
-            className="drum-pad"
-            onClick={(e) => handleClick(e, b)}
+    <div
+      className="d-flex justify-content-center align-items-center"
+      style={{ paddingTop: '20vh' }}
+    >
+      <div id="drum-machine" className="d-flex">
+        <div className="d-flex flex-wrap">
+          {buttons.map((b, i) => (
+            <button
+              style={{
+                flex: '0 0 30%',
+                aspectRatio: '1/1',
+                margin: '0.1rem',
+                backgroundColor: 'lightgray'
+              }}
+              key={i}
+              id={b.id}
+              className="drum-pad"
+              onClick={(e) => handleClick(e, b)}
+            >
+              <audio
+                className="clip"
+                id={b.name.toUpperCase()}
+                src={`https://s3.amazonaws.com/freecodecamp/drums/${b.id}.mp3`}
+              />
+              {b.name.toUpperCase()}
+            </button>
+          ))}
+        </div>
+        <div className="d-flex justify-content-center align-items-center">
+          <p
+            style={{
+              textAlign: 'center',
+              minWidth: '100px',
+              border: '1px solid black',
+              padding: '5px'
+            }}
+            id="display"
           >
-            <audio
-              className="clip"
-              id={b.name.toUpperCase()}
-              src={`https://s3.amazonaws.com/freecodecamp/drums/${b.id}.mp3`}
-            />
-            {b.name.toUpperCase()}
-          </button>
-        ))}
+            {soundDisplay}
+          </p>
+        </div>
       </div>
     </div>
   );
